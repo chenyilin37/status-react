@@ -18,7 +18,7 @@
        [react/text {:font  :medium}
         @unviewed-messages-count]])))
 
-(views/defview chat-list-item-inner-view [{:keys [chat-id name group-chat public? public-key] :as chat-item}]
+(views/defview chat-list-item-inner-view [{:keys [chat-id name group-chat color public? public-key] :as chat-item}]
   (letsubs [photo-path      [:get-chat-photo chat-id]
             current-chat-id [:get-current-chat-id]
             last-message    [:get-last-message chat-id]]
@@ -28,7 +28,7 @@
                      (gfycat/generate-gfy public-key)))]
       [react/view {:style (styles/chat-list-item (= current-chat-id chat-id))}
        (if public?
-         [react/view {:style styles/topic-image}
+         [react/view {:style (styles/topic-image color)}
           [react/text {:style styles/topic-text} 
            (string/capitalize (second name))]]
          [react/image {:style styles/chat-icon

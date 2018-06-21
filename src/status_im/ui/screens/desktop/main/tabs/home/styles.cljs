@@ -57,9 +57,9 @@
    :justify-content  :center
    :align-items      :center})
 
-(def topic-image
+(defn topic-image [color]
   (merge chat-icon
-         {:background-color colors/blue
+         {:background-color color ;colors/blue
           :align-items      :center
           :justify-content  :center}))
 
