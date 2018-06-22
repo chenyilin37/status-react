@@ -34,11 +34,24 @@
 
 (def qr-code-container
   {:align-items    :center
-   :padding-top    56
+   :padding-top    16
    :padding-bottom 46
    :padding-left   58
    :padding-right  58
    })
+
+(def close-icon-container
+  {:flex            1
+   :margin-top      22
+   :margin-right    22
+   :margin-bottom   16
+   :flex-direction  :row
+   :justify-content :flex-end})
+   
+(def close-icon
+  {:height       24
+   :width        24
+   :tint-color   colors/gray-icon })
 
 (def qr-code-title
   {:font-size     20

@@ -32,17 +32,20 @@
 (views/defview qr-code []
   (views/letsubs [current-account [:get-current-account]]
     (let [public-key (:public-key current-account)]
-      [react/view {:style styles/qr-code-container}
-       [react/text {:style styles/qr-code-title}
-        (string/replace (i18n/label :qr-code-public-key-hint) "\n" "")]
-       [react/view {:style styles/qr-code}
-        [qr-code-viewer/qr-code {:value public-key :size 130} #_{:style styles/qr-code}]]
-       [react/text {:style styles/qr-code-text}
-        public-key]
-       [react/touchable-highlight {:on-press #(react/copy-to-clipboard public-key)}
-        [react/view {:style styles/qr-code-copy}
-         [react/text {:style styles/qr-code-copy-text}
-          (i18n/label :copy-qr)]]]])))
+      [react/view
+       [react/view {:style styles/close-icon-container}
+        [vector-icons/icon :icons/close {:style styles/close-icon}]]
+       [react/view {:style styles/qr-code-container}
+        [react/text {:style styles/qr-code-title}
+         (string/replace (i18n/label :qr-code-public-key-hint) "\n" "")]
+        [react/view {:style styles/qr-code}
+         [qr-code-viewer/qr-code {:value public-key :size 130} #_{:style styles/qr-code}]]
+        [react/text {:style styles/qr-code-text}
+         public-key]
+        [react/touchable-highlight {:on-press #(react/copy-to-clipboard public-key)}
+         [react/view {:style styles/qr-code-copy}
+          [react/text {:style styles/qr-code-copy-text}
+           (i18n/label :copy-qr)]]]]])))
 
 (defn share-contact-code []
   [react/touchable-highlight {:on-press #(re-frame/dispatch [:navigate-to :qr-code])}
