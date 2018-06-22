@@ -39,7 +39,7 @@
         [qr-code-viewer/qr-code {:value public-key :size 130} #_{:style styles/qr-code}]]
        [react/text {:style styles/qr-code-text}
         public-key]
-       [react/touchable-highlight {:on-press #()}
+       [react/touchable-highlight {:on-press #(react/copy-to-clipboard public-key)}
         [react/view {:style styles/qr-code-copy}
          [react/text {:style styles/qr-code-copy-text}
           (i18n/label :copy-qr)]]]])))
