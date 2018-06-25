@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-(ns status-im.ui.screens.desktop.main.tabs.profile.styles)
+(ns status-im.ui.screens.desktop.main.tabs.profile.styles
+  (:require [status-im.ui.components.colors :as colors]))
 
 (def logout-row
   {:justify-content :space-between
    :flex-direction  :row})
-(ns status-im.ui.screens.desktop.main.tabs.profile.styles
-  (:require [status-im.ui.components.colors :as colors]))
 
 (def share-contact-code
   {:flex-direction    :row
