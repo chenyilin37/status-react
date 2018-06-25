@@ -259,6 +259,7 @@
    :choose-from-contacts                 "Choose from contacts"
    :no-contacts                          "No contacts yet"
    :show-qr                              "Show QR code"
+   :copy-qr                              "Copy code"
    :qr-code-public-key-hint              "Share this code to \nstart chatting"
    :enter-address                        "Enter address"
    :enter-contact-code                   "Enter contact code"
