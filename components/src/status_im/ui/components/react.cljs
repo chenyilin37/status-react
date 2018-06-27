@@ -57,6 +57,13 @@
 
 (def modal (get-class "Modal"))
 
+(defn alert
+  ([title]
+   (.alert (.-Alert js-dependencies/react-native) title))
+  ([title message buttons]
+   (.alert (.-Alert js-dependencies/react-native) title message (clj->js buttons))))
+
+
 (def pan-responder (.-PanResponder js-dependencies/react-native))
 (def animated (.-Animated js-dependencies/react-native))
 (def animated-view (reagent/adapt-react-class (.-View animated)))

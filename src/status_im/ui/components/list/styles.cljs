@@ -121,3 +121,21 @@
 
 (def label
   {:color colors/gray})
+
+(def swipe-item
+  {:flex-direction   :row
+   :justify-content  :center
+   :background-color colors/white})
+
+(def swipe-button-background
+  {:alignItems     "center"
+   :flex           1
+   ;:background-color "#8BC645"
+   :flexDirection  "row"
+   :justifyContent "space-between"
+   :padding        15})
+
+(def swipe-button-txt
+  {:color            colors/blue-dark
+   :background-color (colors/alpha colors/blue 0.1)
+   :font-size        14})

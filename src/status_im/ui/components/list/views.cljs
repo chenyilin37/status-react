@@ -24,6 +24,7 @@
             [status-im.ui.components.icons.vector-icons :as vector-icons]
             [status-im.ui.components.list.styles :as styles]
             [status-im.ui.components.react :as react]
+            [status-im.ui.components.react-exts :as rn-exts]
             [status-im.utils.platform :as platform]))
 
 (def flat-list-class (react/get-class "FlatList"))
@@ -185,6 +186,64 @@
           props
           {:sections            (clj->js (map wrap-per-section-render-fn sections))
            :renderSectionHeader (wrap-render-section-header-fn render-section-header-fn)})])
+
+(defn swipelist-item
+  ([props content] (swipelist-item props nil content))
+  ([props left content] (swipelist-item props left content nil))
+  ([{:keys [item-options left-options right-options] :as props}
+    left content right]
+   (let [leftOpenValue (if left-options (:open-value left-options) 0)
+         rightOpenValue (if right-options (:open-value right-options) 0)
+         itemStyle (merge styles/swipe-item (:style item-options))
+         buttonStyle (merge styles/swipe-button-txt (:button-style item-options))
+         background-color (:background-color buttonStyle)
+         buttonStyle (dissoc buttonStyle :background-color)]
+
+
+     [rn-exts/swipe-list-row {:leftOpenValue  leftOpenValue
+                              :rightOpenValue rightOpenValue}
+
+      [react/view {:style (assoc styles/swipe-button-background :background-color background-color)}
+       [react/touchable-highlight {:on-press (:on-press left-options)}
+        [react/text {:style buttonStyle} (:title left-options)]]
+
+       [react/touchable-highlight {:on-press (:on-press right-options)}
+        [react/text {:style buttonStyle} (:title right-options)]]]
+
+
+
+      [react/touchable-highlight {:on-press (:on-press item-options)}
+       [react/view {:style itemStyle}
+        (when left
+          [react/view {:style styles/left-item-wrapper}
+           left])
+        [react/view {:style styles/content-item-wrapper}
+         content]
+        (when right
+          [react/view {:style styles/right-item-wrapper}
+           right])]]])))
+
+
+
+
+
+
+
+(defn swipe-section-list
+  "docstring"
+  [{:keys [sections render-section-header-fn] :as props
+    :or   {render-section-header-fn default-render-section-header}}]
+  [rn-exts/swipe-list-view
+   (merge (base-list-props props)
+          props
+          {:useSectionList      true
+           :closeOnScroll       true
+           :sections            (clj->js (map wrap-per-section-render-fn sections))
+           :renderSectionHeader (wrap-render-section-header-fn render-section-header-fn)})])
+
+
+
+
 
 (defn- render-action [{:keys [label accessibility-label icon action disabled?]}
                       {:keys [action-style action-label-style icon-opts]}]

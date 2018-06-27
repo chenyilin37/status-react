@@ -24,6 +24,7 @@
    (when-not show-welcome?
      [toolbar/content-wrapper
       [components.common/logo styles/toolbar-logo]])
+
    [toolbar/actions
     (when platform/ios?
       [(-> (toolbar.actions/add true #(re-frame/dispatch [:navigate-to :new]))
@@ -78,8 +79,7 @@
                   view-id [:get :view-id]]
     [react/view styles/container
      [toolbar show-welcome?]
-     (cond show-welcome?
-           [welcome view-id]
+     (cond show-welcome? [welcome view-id]
            (empty? home-items)
            [react/view styles/no-chats
             [react/text {:style styles/no-chats-text}
