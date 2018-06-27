@@ -50,6 +50,4 @@ dependency_setup \
 
 using_cocoapods && dependency_setup "cd ios && pod install && cd .."
 
-./add-libs.sh
-
 setup_complete
