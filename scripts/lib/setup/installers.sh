@@ -154,7 +154,7 @@ function install_react_native_cli() {
   if npm list -g | grep -q react-native-cli; then
     already_installed "react-native-cli"
   else
-    $npm_command install -g react-native-cli
+    $npm_command install -g yarn re-natal react-native-cli
   fi
 }
 

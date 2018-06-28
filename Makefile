@@ -32,9 +32,9 @@ setup: ##@prepare Install all the requirements for status-react
 prepare: ##@prepare Install dependencies and prepare workspace
 	lein deps
 	yarn install
-	./re-natal deps
-	./re-natal use-figwheel
-	./re-natal enable-source-maps
+	re-natal deps
+	re-natal use-figwheel
+	re-natal enable-source-maps
 
 prepare-ios: prepare ##@prepare Install iOS specific dependencies
 	mvn -f modules/react-native-status/ios/RCTStatus dependency:unpack
@@ -73,24 +73,24 @@ full-prod-build: ##@build build prod for both Android and iOS
 # Dev builds
 #----------------
 dev-android-real: ##@dev build for Android real device
-	./re-natal use-android-device real
-	./re-natal use-figwheel
+	re-natal use-android-device real
+	re-natal use-figwheel
 
 dev-android-avd: ##@dev build for Android AVD simulator
-	./re-natal use-android-device avd
-	./re-natal use-figwheel
+	re-natal use-android-device avd
+	re-natal use-figwheel
 
 dev-android-genymotion: ##@dev build for Android Genymotion simulator
-	./re-natal use-android-device genymotion
-	./re-natal use-figwheel
+	re-natal use-android-device genymotion
+	re-natal use-figwheel
 
 dev-ios-real: ##@dev build for iOS real device
-	./re-natal use-ios-device real
-	./re-natal use-figwheel
+	re-natal use-ios-device real
+	re-natal use-figwheel
 
 dev-ios-simulator: ##@dev build for iOS simulator
-	./re-natal use-ios-device simulator
-	./re-natal use-figwheel
+	re-natal use-ios-device simulator
+	re-natal use-figwheel
 
 #--------------
 # REPL

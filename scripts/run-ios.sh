@@ -41,7 +41,7 @@ END
 # Install deps, prepare for genymotion and figwheel
 npm install
 cd ios && pod install && cd ..
-lein deps && ./re-natal use-ios-device real && ./re-natal use-figwheel && lein re-frisk use-re-natal
+lein deps && re-natal use-ios-device real && re-natal use-figwheel && lein re-frisk use-re-natal
 mvn -f modules/react-native-status/ios/RCTStatus dependency:unpack
 
 # open figwheel in new tab
