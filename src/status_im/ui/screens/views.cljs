@@ -1,9 +1,9 @@
 (ns status-im.ui.screens.views
   (:require-macros [status-im.utils.views :refer [defview letsubs] :as views])
   (:require [re-frame.core :refer [dispatch]]
-            [status-im.utils.platform :refer [android?]]
-            [status-im.ui.components.react :refer [view modal create-main-screen-view] :as react]
-            [status-im.ui.components.styles :as common-styles]
+            [status-im.utils.platform :refer [android?] :as platform]
+            [status-im.ui.components.react :refer [view modal safe-area-view keyboard-avoiding-view] :as react]
+            [status-im.ui.components.styles :as styles]
             [status-im.ui.screens.main-tabs.views :refer [main-tabs]]
 
             [status-im.ui.screens.accounts.login.views :refer [login]]
@@ -51,13 +51,70 @@
             [status-im.ui.screens.usage-data.views :refer [usage-data]]
             [status-im.ui.screens.profile.seed.views :refer [backup-seed]]))
 
+;; Platform-specific View
+;; 根据不同平台，选择主容器控件
+(defmulti create-main-screen-view #(cond
+                                     platform/iphone-x? :iphone-x
+                                     platform/ios? :ios
+                                     platform/android? :android))
+
+(defmethod create-main-screen-view :iphone-x [current-view]
+  (fn [props & children]
+    (let [props (merge props
+                       {:background-color
+                        (case current-view
+                          (:wallet
+                           :wallet-send-transaction
+                           :wallet-transaction-sent
+                           :wallet-request-transaction
+                           :wallet-send-assets
+                           :wallet-request-assets
+                           :choose-recipient
+                           :recent-recipients
+                           :wallet-send-transaction-modal
+                           :wallet-transaction-sent-modal
+                           :wallet-send-transaction-request
+                           :wallet-transaction-fee
+                           :wallet-sign-message-modal
+                           :contact-code) styles/color-blue4
+                          (:qr-viewer
+                           :recipient-qr-code) "#2f3031"
+                          (:accounts :login
+                                     :wallet-transactions-filter) styles/color-white
+                          :transparent)})
+          children (cond-> children
+                     (#{:wallet
+                        :recent-recipients
+                        :wallet-send-assets
+                        :wallet-request-assets} current-view)
+                     (conj [view {:background-color styles/color-white
+                                  :position         :absolute
+                                  :bottom           0
+                                  :right            0
+                                  :left             0
+                                  :height           100
+                                  :z-index          -1000}]))]
+      (apply vector safe-area-view props children))))
+
+(defmethod create-main-screen-view :default [_]
+  view)
+
+(defview main-screen-modal-view [current-view & components]
+  (letsubs [signing? [:get-in [:wallet :send-transaction :signing?]]]
+    (let [main-screen-view (create-main-screen-view current-view)]
+      [main-screen-view styles/flex
+       [keyboard-avoiding-view {:flex 1 :flex-direction :column}
+        (apply vector view styles/flex components)
+        (when (and platform/iphone-x? (not signing?))
+          [view {:flex 0 :height 34}])]])))
+
 (defn get-main-component [view-id]
   (case view-id
     :display-collectible collectibles/display-collectible
     :intro intro
     :create-account create-account
     :usage-data usage-data
-    (:home :wallet :my-profile) main-tabs
+    (:home :contacts :wallet :my-profile) main-tabs
     :browser browser
     :open-dapp open-dapp
     :dapp-description dapp-description
@@ -115,7 +172,7 @@
 (defview main-modal []
   (letsubs [modal-view [:get :modal]]
     (when modal-view
-      [view common-styles/modal
+      [view styles/modal
        [modal {:animation-type   :slide
                :transparent      true
                :on-request-close (fn []
@@ -128,7 +185,7 @@
                                      :else
                                      (dispatch [:navigate-back])))}
         (let [component (get-modal-component modal-view)]
-          [react/main-screen-modal-view modal-view
+          [main-screen-modal-view modal-view
            [component]])]])))
 
 (defview main []
@@ -138,6 +195,6 @@
     (when view-id
       (let [component        (get-main-component view-id)
             main-screen-view (create-main-screen-view view-id)]
-        [main-screen-view common-styles/flex
+        [main-screen-view styles/flex
          [component]
          [main-modal]]))))

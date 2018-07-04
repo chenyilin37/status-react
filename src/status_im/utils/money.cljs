@@ -146,3 +146,4 @@
       (crypto->fiat (get-in prices [from :USD :price] (bignumber 0)))
       (with-precision 2)
       str))
+

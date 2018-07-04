@@ -157,3 +157,7 @@
                        acc))
                    {}
                    contacts)))
+
+(reg-sub :get-contacts-unread-messages-number
+         (fn [db]
+           0))

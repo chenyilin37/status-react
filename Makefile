@@ -130,8 +130,16 @@ test-auto: ##@test Run tests in interactive (auto) mode in NodeJS
 	lein with-profile test doo node test
 
 #--------------
+# Code
+#--------------
+
+check-code:##@code
+	lein cljfmt check
+
+#--------------
 # Other
 #--------------
+
 react-native: ##@other Start react native packager
 	react-native start
 

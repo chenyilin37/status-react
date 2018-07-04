@@ -8,10 +8,12 @@
             [status-im.ui.components.styles :as common.styles]
             [status-im.ui.screens.home.views :as home]
             [status-im.ui.screens.wallet.views :as wallet]
+            [status-im.ui.screens.contacts.views :as contacts]
             [status-im.ui.screens.main-tabs.styles :as styles]
             [status-im.ui.screens.profile.user.views :as profile.user]
             [status-im.ui.components.common.common :as components.common]))
 
+;KAN：定义主菜单
 (def tabs-list-data
   [{:view-id             :home
     :content             {:title         (i18n/label :t/home)
@@ -19,6 +21,12 @@
                           :icon-active   :icons/home-active}
     :count-subscription  :get-chats-unread-messages-number
     :accessibility-label :home-tab-button}
+   {:view-id             :contacts
+    :content             {:title         (i18n/label :t/contacts) ;; translations
+                          :icon-inactive :icons/contacts    ;;icons/vector_icons.cljs
+                          :icon-active   :icons/contacts-active}
+    :count-subscription  :get-contacts-unread-messages-number ;;contacts/subs.cljs
+    :accessibility-label :contacts-tab-button}
    {:view-id             :wallet
     :content             {:title         (i18n/label :t/wallet)
                           :icon-inactive :icons/wallet
@@ -73,6 +81,7 @@
 
       (case view-id
         :home [home/home]
+        :contacts [contacts/main-view]
         :wallet [wallet/wallet]
         :my-profile [profile.user/my-profile])
 

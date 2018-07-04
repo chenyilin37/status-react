@@ -197,37 +197,24 @@
          itemStyle (merge styles/swipe-item (:style item-options))
          buttonStyle (merge styles/swipe-button-txt (:button-style item-options))
          background-color (:background-color buttonStyle)
-         buttonStyle (dissoc buttonStyle :background-color)]
+         buttonStyle (dissoc buttonStyle :background-color)] [rn-exts/swipe-list-row {:leftOpenValue  leftOpenValue
+                                                                                      :rightOpenValue rightOpenValue}
 
+                                                              [react/view {:style (assoc styles/swipe-button-background :background-color background-color)}
+                                                               [react/touchable-highlight {:on-press (:on-press left-options)}
+                                                                [react/text {:style buttonStyle} (:title left-options)]]
 
-     [rn-exts/swipe-list-row {:leftOpenValue  leftOpenValue
-                              :rightOpenValue rightOpenValue}
-
-      [react/view {:style (assoc styles/swipe-button-background :background-color background-color)}
-       [react/touchable-highlight {:on-press (:on-press left-options)}
-        [react/text {:style buttonStyle} (:title left-options)]]
-
-       [react/touchable-highlight {:on-press (:on-press right-options)}
-        [react/text {:style buttonStyle} (:title right-options)]]]
-
-
-
-      [react/touchable-highlight {:on-press (:on-press item-options)}
-       [react/view {:style itemStyle}
-        (when left
-          [react/view {:style styles/left-item-wrapper}
-           left])
-        [react/view {:style styles/content-item-wrapper}
-         content]
-        (when right
-          [react/view {:style styles/right-item-wrapper}
-           right])]]])))
-
-
-
-
-
-
+                                                               [react/touchable-highlight {:on-press (:on-press right-options)}
+                                                                [react/text {:style buttonStyle} (:title right-options)]]] [react/touchable-highlight {:on-press (:on-press item-options)}
+                                                                                                                            [react/view {:style itemStyle}
+                                                                                                                             (when left
+                                                                                                                               [react/view {:style styles/left-item-wrapper}
+                                                                                                                                left])
+                                                                                                                             [react/view {:style styles/content-item-wrapper}
+                                                                                                                              content]
+                                                                                                                             (when right
+                                                                                                                               [react/view {:style styles/right-item-wrapper}
+                                                                                                                                right])]]])))
 
 (defn swipe-section-list
   "docstring"
@@ -240,10 +227,6 @@
            :closeOnScroll       true
            :sections            (clj->js (map wrap-per-section-render-fn sections))
            :renderSectionHeader (wrap-render-section-header-fn render-section-header-fn)})])
-
-
-
-
 
 (defn- render-action [{:keys [label accessibility-label icon action disabled?]}
                       {:keys [action-style action-label-style icon-opts]}]

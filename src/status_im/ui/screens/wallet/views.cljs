@@ -50,7 +50,6 @@
        (i18n/label :t/wallet-backup-seed-description)]]
      [vector-icons/icon :icons/forward {:color :white}]]]])
 
-
 (defn- render-asset [currency]
   (fn [{:keys [symbol icon decimals amount]}]
     (let [asset-value (re-frame/subscribe [:asset-value symbol decimals (-> currency :code keyword)])]
@@ -71,8 +70,6 @@
                      :uppercase?      true
                      :number-of-lines 1}
          (if @asset-value @asset-value "...")]]])))
-
-
 
 (def item-icon-forward
   [list/item-icon {:icon      :icons/forward
@@ -131,26 +128,17 @@
     :icon                :icons/transaction-history
     :action              #(re-frame/dispatch [:navigate-to :transactions-history])}])
 
-
 (defn render-asset-swipe
   [currency]
   (fn [{:keys [symbol icon decimals amount]}]
     (let [asset-value (re-frame/subscribe [:asset-value symbol decimals (-> currency :code keyword)])]
-      [list/swipelist-item {:item-options  {:on-press #(re-frame/dispatch [:navigate-to :transactions-history])}
+      [list/swipelist-item {:item-options  {:on-press #(re-frame/dispatch [:navigate-to :transactions-history])} :left-options  {:open-value 75
+                                                                                                                                 :title      (i18n/label :t/wallet-request)
+                                                                                                                                 :on-press   #(re-frame/dispatch [:navigate-to :wallet-request-transaction])}
 
-
-                            :left-options  {:open-value 75
-                                            :title      (i18n/label :t/wallet-request)
-                                            :on-press   #(re-frame/dispatch [:navigate-to :wallet-request-transaction])}
-
-                            :right-options {
-                                            :open-value -75
+                            :right-options {:open-value -75
                                             :title      (i18n/label :t/wallet-send)
-                                            :on-press   #(re-frame/dispatch [:navigate-to :wallet-send-transaction])}}
-
-
-
-       [list/item-image icon]
+                                            :on-press   #(re-frame/dispatch [:navigate-to :wallet-send-transaction])}} [list/item-image icon]
        [react/view {:style styles/asset-item-value-container}
         [react/text {:style               styles/asset-item-value
                      :number-of-lines     1
@@ -166,17 +154,11 @@
                     :number-of-lines 1}
         (if @asset-value @asset-value "...")]])))
 
-
-
-
-
-
 (defn- asset-section-swipe [assets currency address-hex]
   (let [{:keys [tokens nfts]} (group-assets assets)]
     [react/view styles/asset-section
      [list/swipe-section-list
-      {
-       ; :leftOpenValue      75
+      {; :leftOpenValue      75
        ; :rightOpenValue     -150
 
        :default-separator? true
@@ -202,18 +184,15 @@
      [total-section portfolio-value currency]
      [react/scroll-view {:refresh-control
                          (reagent/as-element
-                           [react/refresh-control {:on-refresh #(re-frame/dispatch [:update-wallet])
-                                                   :tint-color :white
-                                                   :refreshing false}])}
+                          [react/refresh-control {:on-refresh #(re-frame/dispatch [:update-wallet])
+                                                  :tint-color :white
+                                                  :refreshing false}])}
 
       (when (and (not seed-backed-up?)
                  (some (fn [{:keys [amount]}]
                          (and amount (not (.isZero amount))))
                        assets))
-        [backup-seed-phrase])
-
-
-      ;[list/action-list actions {:container-style styles/action-section}]
+        [backup-seed-phrase]);[list/action-list actions {:container-style styles/action-section}]
       [asset-section-swipe assets currency address-hex]
       ;; Hack to allow different colors for bottom scroll view (iOS only)
       [react/view {:style styles/scroll-bottom}]]]))

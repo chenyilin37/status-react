@@ -28,6 +28,7 @@
 
 (def icons {:icons/discover            (components.svg/slurp-svg "./resources/icons/bottom/discover_gray.svg")
             :icons/contacts            (components.svg/slurp-svg "./resources/icons/bottom/contacts_gray.svg")
+            :icons/contacts-active     (components.svg/slurp-svg "./resources/icons/bottom/contacts_active.svg")
             :icons/home                (components.svg/slurp-svg "./resources/icons/bottom/home_gray.svg")
             :icons/home-active         (components.svg/slurp-svg "./resources/icons/bottom/home_blue.svg")
             :icons/profile             (components.svg/slurp-svg "./resources/icons/bottom/profile_gray.svg")
